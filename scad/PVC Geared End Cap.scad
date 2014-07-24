@@ -2,10 +2,13 @@ include <MCAD\gears.scad>;
 include <MCAD\units.scad>;
 
 //translate([0,0,1 * inch])
- 
+numberOfTeeth = 100;
+gearDiameter = 63.6619;
+
+
  difference(){
  linear_extrude(.25 * inch)
-			gear(number_of_teeth=100,diametral_pitch=(100+2)/63.6619, pressure_angle=20, clearance=-.25);
+			gear(number_of_teeth=numberOfTeeth,diametral_pitch=numberOfTeeth/gearDiameter, pressure_angle=20, clearance=-.25);
 // gear(number_of_teeth=20,circular_pitch=1.713600311563693, pressure_angle=0);
 
 
