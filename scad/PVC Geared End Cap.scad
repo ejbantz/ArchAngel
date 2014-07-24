@@ -7,7 +7,7 @@ gearDiameter = 63.6619;
 
 
  difference(){
- linear_extrude(.25 * inch)
+ linear_extrude(.26 * inch)
 			gear(number_of_teeth=numberOfTeeth,diametral_pitch=(numberOfTeeth+4)/gearDiameter, pressure_angle=20, clearance=-.25);
 // gear(number_of_teeth=20,circular_pitch=1.713600311563693, pressure_angle=0);
 
