@@ -10,12 +10,14 @@ use <Herringbone_gears_hi-res.scad>;
 		
 		comboGears();
 		cone();
+		translate([0,0,-13])
+			nutHolder();
 		
 }
 
 
 
-translate([0,0,.75 * inch])
+translate([0,0,.75/2 * inch])
 	  rotate([180,0,0])
 	 	addHolesToConnectToPipe()  addCenterHole() pipeConnection(); 
 	  
@@ -42,13 +44,13 @@ module comboGears(){
 	rotate([180,0,0])
 	translate([0,0,.15375 * inch])
 	{		
-		beltGear();
+		removeCenterCore() beltGear();
 			translate([0,0,.55 * inch])
 				motorGear();
 			for (side = [1,-1])
 			{
 				translate([0,0,.275 * inch * side + (.4 * inch/2)])
-					beltSideWall();
+					removeCenterCore() beltSideWall();
 			}
 	}
 }
@@ -56,7 +58,10 @@ module comboGears(){
 module cone()
 {
   translate([0,0,.75/2 * inch])
-  cylinder(.75 * inch, 2.85/2 * inch, 4/2 * inch, center = true, $fn=100);
+  difference() {
+		cylinder(.75 * inch, 2.85/2 * inch, 4/2 * inch, center = true, $fn=100);
+		cylinder(.80 * inch, (2.85-.5)/2 * inch, 3.525/2 * inch, center = true, $fn=100);
+	}		
 }
 
 	
@@ -100,12 +105,18 @@ module pipeConnection()
 translate([0,0,-1 * inch])
 	difference()
 	{	  
-		cylinder(2 * inch, 4 * inch /2 , 4 * inch /2, center = true, $fn=100);
-		translate([0,0,-.25 * inch])
-			cylinder(2 * inch, 3.5 * inch /2 , 3.5 * inch /2, center = true, $fn=100);
+		cylinder(1.25 * inch, 4 * inch /2 , 4 * inch /2, center = true, $fn=100);
+		cylinder(2 * inch, 3.525 * inch /2 , 3.525 * inch /2, center = true, $fn=100);
 	}
 }
 
+module removeCenterCore()
+{
+		difference(){
+			children();
+			cylinder(1000,1.1 * inch,1.1 * inch,center=true, $fn=100);
+		}
+}
 
 module addCenterHole()
 {
@@ -113,4 +124,13 @@ module addCenterHole()
 			children();
 			cylinder(1000,4,4,center=true, $fn=100);
 		}
+}
+
+
+module nutHolder() {
+	difference(){
+	  cylinder(10,25/2,25/2, center=true);
+	  cylinder(11,.595/2*inch,.595/2*inch, center=true, $fn=6);
+	}
+  
 }
