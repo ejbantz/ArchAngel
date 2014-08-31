@@ -21,8 +21,57 @@ use <inc/parametric_involute_gear_v5.1.scad>
 
 //WadesL();  //this module call will make the large gear
 //WadesS();  //this module call will make the small gear
-WadeL_double_helix();  //this module call will make the large double helix gear
+//WadeL_double_helix();  //this module call will make the large double helix gear
 //WadesS_double_helix(); //this module call will make the small double helix gear
+CNCWheel();
+
+module CNCWheel(){
+//small WADE's Gear
+	//rotate([180,0,-23.5])translate([-10,-10,-18])color([ 100/255, 255/255, 200/255])import_stl("wades_gear.stl");
+
+	circles=0;
+	teeth=9;
+	pitch=268;
+	twist=200;
+	height=25;
+	pressure_angle=30;
+	involute_facets=12;	
+	circle_facets=7;
+
+	difference(){
+		union(){
+		gear (number_of_teeth=teeth,
+			circular_pitch=pitch,
+			pressure_angle=pressure_angle,
+			clearance = 0.2,
+			gear_thickness =  height/4,
+			rim_thickness = height/4,
+			rim_width = 5,
+			hub_thickness = height/2*1.2,
+			hub_diameter = 22,
+			bore_diameter = 5,
+			circles=circles,
+			twist = twist/teeth,
+			involute_facets = involute_facets,
+			circle_facets = circle_facets);
+		mirror([0,0,1])
+		gear (number_of_teeth=teeth,
+			circular_pitch=pitch,
+			pressure_angle=pressure_angle,
+			clearance = 0.2,
+			gear_thickness =  height/4*1.2,
+			rim_thickness =  height/4,
+			rim_width = 5,
+			hub_thickness = height/4,
+			hub_diameter=20,
+			bore_diameter=5,
+			circles=circles,
+			twist=twist/teeth,
+			involute_facets = involute_facets,
+			circle_facets = circle_facets);
+		}
+	}
+}
 
 module WadeL_double_helix(){
 	//Large WADE's Gear - Double Helix

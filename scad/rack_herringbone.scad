@@ -9,19 +9,20 @@
 //http://www.thingiverse.com/thing:6011
 
 
+include <MCAD\gears.scad>;
 
 pi=3.1415926535897932384626433832795;
 innerRadius=3.1;//shaft radius, in mm
 borders=2.5;//how thick should the borders around the central "shaft" be, in mm
 diametralPitch=12;
-numberOfTeeth=10;
+numberOfTeeth=60;
 pressureAngle=20*pi/180;
 centerAngle=25;//angle at center of teeth
 
 
 //example usage
 rack(innerRadius,borders,diametralPitch,numberOfTeeth,pressureAngle,centerAngle);
-
+ 
 
 
 module rack(innerRadius,borders,P,N,PA,CA)
@@ -79,15 +80,13 @@ module rack(innerRadius,borders,P,N,PA,CA)
 	{
 		difference()
 		{
-			support(supportL,supportW,supportSize,baseoffsetY);
-			rotate([90,90,0]) 
-			{cylinder(h=length+10,r=innerRadius,center=true,$fn=100);}
+			support(supportL,supportW,(supportSize - 7),baseoffsetY);
 		}
 
 	
 		for (i = [0:N-1]) 
 		{
-			translate([0,i*offset-length/2+realBase/2,supportSize/2+height/2]) 
+			translate([0,i*offset-length/2+realBase/2,(supportSize-7)/2+height/2]) 
 			{	
 				
 				tooth(basesegmentL,basesegmentW,topsegmentL,topsegmentW,height,baseoffsetY,topoffsetY);
@@ -102,7 +101,7 @@ module rack(innerRadius,borders,P,N,PA,CA)
 
 module support(supportL,supportW,height,offsetY)
 {
-	 tooth(supportL,supportW,supportL,supportW,height,offsetY,offsetY);
+	# tooth(supportL,supportW,supportL,supportW ,height,offsetY,offsetY );
 }
 
 
@@ -253,4 +252,40 @@ gear (
 
 }
 
+module test_double_helix_gear (
+	teeth=17,
+	circles=8)
+{
+	//double helical gear
+	{
+		twist=200;
+		height=20;
+		pressure_angle=30;
 
+		gear (number_of_teeth=teeth,
+			circular_pitch=700,
+			pressure_angle=pressure_angle,
+			clearance = 0.2,
+			gear_thickness = height/2*0.5,
+			rim_thickness = height/2,
+			rim_width = 5,
+			hub_thickness = height/2*1.2,
+			hub_diameter=15,
+			bore_diameter=5,
+			circles=circles,
+			twist=twist/teeth);
+		mirror([0,0,1])
+		gear (number_of_teeth=teeth,
+			circular_pitch=700,
+			pressure_angle=pressure_angle,
+			clearance = 0.2,
+			gear_thickness = height/2,
+			rim_thickness = height/2,
+			rim_width = 5,
+			hub_thickness = height/2,
+			hub_diameter=15,
+			bore_diameter=5,
+			circles=circles,
+			twist=twist/teeth);
+	}
+}
